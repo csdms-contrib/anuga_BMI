@@ -42,6 +42,8 @@ class AnugaSolver(object):
         
         self._time = 0
         
+        
+        
         self.initialize_domain()
         self._bdry_conditions = self.set_boundary_conditions()
         self.domain.set_boundary(self._bdry_conditions)
@@ -62,7 +64,22 @@ class AnugaSolver(object):
 
 
     def set_boundary_conditions(self):
-        """Set boundary conditions"""
+        """
+        Set boundary conditions for ANUGA domain
+        
+        Valid boundaries are (case insensitive):
+        - reflective
+        - transmissive
+        - dirichlet / fixed (must specify stage at this boundary)
+        - time (need to specify a lambda function)
+        
+        TODO:
+        - check possible failure modes (how would anuga normally fail if the boundaries
+            are not specified correctly?)
+        - add defaults if not enough boundaries are specified
+        - fail if receives an unknown boundary type
+        - accept other inputs for time boundary (file?)
+        """
         
         _bdry_conditions = {}
         
@@ -87,8 +104,8 @@ class AnugaSolver(object):
             
                 dirichlet_vals = value[1:]
                 
-                assert len(value) > 1, """Need to specify stage of
-                                          Dirichlet boundary %s""" % key
+                assert len(value) > 1, ("Need to specify stage of "
+                                        "Dirichlet boundary '%s'" % key)
                 
                 if len(dirichlet_vals) == 1: dirichlet_vals += [0., 0.]
                     
@@ -98,15 +115,17 @@ class AnugaSolver(object):
                 
             elif bdry_type.lower() == 'time':
             
-                assert len(value) > 1, """Need to specify lambda function
-                                          for Time boundary %s""" % key
+                assert len(value) > 1, ("Need to specify lambda function for "
+                                        "Time boundary '%s'" % key)
                 
                 _bdry_conditions[key] = anuga.Time_boundary(domain = domain,
                                                                  function = value[1])
                 
             else:
             
-                print "Did not recognize boundary type: " + bdry_type
+                assert False, ("Did not recognize boundary type '%s' "
+                               "of boundary '%s'" % (bdry_type, key))
+                
                 
                 
         return _bdry_conditions
@@ -117,8 +136,8 @@ class AnugaSolver(object):
         """Initialize anuga domain"""
 
         if self._domain_shape[:6] in ['square', 'rectan']:
-            # finds square and both rectangle and rectangular
         
+            # finds square and both rectangle and rectangular
             self.domain = anuga.rectangular_cross_domain(
                                 self._shape[0],
                                 self._shape[1],
@@ -126,13 +145,11 @@ class AnugaSolver(object):
                                 len2 = self._size[1])
                                 
         elif self._domain_shape in ['outline', 'irregular']:
-        
             pass
             
         else:
-        
-            print """domain shape must be 'square'/'rectangle'/'rectangular'
-                     or 'outline'/'irregular'"""
+            assert False, ("domain shape must be 'square'/'rectangle'/'rectangular' "
+                            "or 'outline'/'irregular'")
                 
         
 

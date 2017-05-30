@@ -26,7 +26,7 @@ class BmiAnuga(Bmi):
         self._grids = {}
         self._grid_type = {}
 
-    def initialize(self, filename=None):
+    def initialize(self, filename='anuga.yaml'):
         """Initialize the ANUGA model.
 
         Parameters
@@ -34,6 +34,9 @@ class BmiAnuga(Bmi):
         filename : str, optional
             Path to name of input file.
         """
+        
+        with open(filename, 'r') as file_obj:
+            params = yaml.load(file_obj)
         
         default_params = {'domain_shape':'square',
                           'shape':(10.,5.),
@@ -51,9 +54,30 @@ class BmiAnuga(Bmi):
                                        'bottom': 'Reflective'},
                           'maximum_triangle_area':10}
         
-        with open(filename, 'r') as file_obj:
-            params = yaml.load(file_obj)
-            params.update(default_params)
+        
+        
+        for key,value in default_params.items():
+            params[key] = params.get(key, default_params[key])
+
+        for key,value in params.items():
+            if (value is None) or (value == 'None'):
+                params[key] = default_params[key]
+
+        if params['domain_shape'] == 'square':
+            assert (set(params['boundary_conditions'].keys()) ==
+                    set(['left', 'right', 'top', 'bottom'])), (
+                    "The boundary names for square domains must be "
+                    "'left', 'right', 'top', and 'bottom'. Check that your "
+                    "boundary conditions use those names.")
+        
+        if params['domain_shape'] == 'outline':
+            assert (set(params['boundary_conditions'].keys()) ==
+                    set(params['boundary_tags'].keys())), (
+                    "The boundary tag names don't match the boundary "
+                    "condition names. Check that the two dictionaries use "
+                    "the same boundary names.")
+                    
+                    
             
         self._anuga = AnugaSolver(params)
         
