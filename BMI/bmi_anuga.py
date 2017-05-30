@@ -42,16 +42,22 @@ class BmiAnuga(Bmi):
                           'shape':(10.,5.),
                           'size':(10.,5.),
                           'friction':0.,
-                          'outline_filename':None,
-                          'elevation_filename':None,
+                          'outline_filename':'',
+                          'elevation_filename':'',
                           'output_filename':'anuga_output',
-                          'output_timestep':10,
-                          'timestep':1,
-                          'boundary_tags':['left', 'right', 'top', 'bottom'],
+                          'timestep':10,
+                          'boundary_tags':{'left':[],
+                                           'right':[],
+                                           'top':[],
+                                           'bottom':[]},
                           'boundary_conditions':{'left': 'Reflective',
                                        'right': ['Dirichlet', 5, 0, 0],
                                        'top': 'Reflective',
                                        'bottom': 'Reflective'},
+                          'stored_quantities':{'stage':2,
+                                               'xmomentum':2,
+                                               'ymomentum':2,
+                                               'elevation':1},
                           'maximum_triangle_area':10}
         
         
@@ -63,19 +69,11 @@ class BmiAnuga(Bmi):
             if (value is None) or (value == 'None'):
                 params[key] = default_params[key]
 
-        if params['domain_shape'] == 'square':
-            assert (set(params['boundary_conditions'].keys()) ==
-                    set(['left', 'right', 'top', 'bottom'])), (
-                    "The boundary names for square domains must be "
-                    "'left', 'right', 'top', and 'bottom'. Check that your "
-                    "boundary conditions use those names.")
-        
-        if params['domain_shape'] == 'outline':
-            assert (set(params['boundary_conditions'].keys()) ==
-                    set(params['boundary_tags'].keys())), (
-                    "The boundary tag names don't match the boundary "
-                    "condition names. Check that the two dictionaries use "
-                    "the same boundary names.")
+        assert (set(params['boundary_conditions'].keys()) ==
+                set(params['boundary_tags'].keys())), (
+                "The boundary tag names don't match the boundary "
+                "condition names. Check that the two dictionaries use "
+                "the same boundary names.")
                     
                     
             
@@ -117,9 +115,9 @@ class BmiAnuga(Bmi):
 
     def update(self):
         """Advance model by one time step."""
-        self._anuga.update()
         self._time += self.get_time_step()
         self._anuga._time = self._time
+        self._anuga.update()
 
     def update_frac(self, time_frac):
         """Update model by a fraction of a time step.
@@ -134,6 +132,7 @@ class BmiAnuga(Bmi):
         self.update()
         self._anuga.time_step = time_step
 
+
     def update_until(self, then):
         """Update model until a particular time.
 
@@ -146,7 +145,9 @@ class BmiAnuga(Bmi):
 
         for _ in range(int(n_steps)):
             self.update()
-        self.update_frac(n_steps - int(n_steps))
+        
+        if (n_steps - int(n_steps)) > 0.0:
+            self.update_frac(n_steps - int(n_steps))
 
     def finalize(self):
         """Finalize model."""

@@ -8,56 +8,92 @@ import anuga
 
 class AnugaSolver(object):
 
-#     def __init__(self,
-#                 domain_shape = 'square',
-#                 shape = (10.,5.),
-#                 size = (10.,5.),
-#                 friction = 0.,
-#                 outline_filename = None,
-#                 elevation_filename = None,
-#                 output_filename = 'anuga_output',
-#                 output_timestep = 10,
-#                 timestep = 1,
-#                 boundary_tags = None,
-#                 boundary_conditions = {'left': 'Reflective',
-#                                        'right': ['Dirichlet', 5, 0, 0],
-#                                        'top': 'Reflective',
-#                                        'bottom': 'Reflective'},
-#                 maximum_triangle_area = 10):
-
     def __init__(self, params):
                 
         self._domain_shape = str(params['domain_shape'])
         self._shape = tuple(params['shape'])
         self._size = tuple(params['size'])
-        self._friction = float(params['friction'])
         self._outline_filename = str(params['outline_filename'])
         self._elevation_filename = str(params['elevation_filename'])
         self._output_filename = str(params['output_filename'])
-        self._output_time_step = float(params['output_timestep'])
         self._time_step = float(params['timestep'])
-        self._bdry_tags = list(params['boundary_tags'])
+        self._bdry_tags = dict(params['boundary_tags'])
         self._bdry_conditions = dict(params['boundary_conditions'])
-        self._maximum_triangle_area = float(params['maximum_triangle_area'])
+        self._max_triangle_area = float(params['maximum_triangle_area'])
+        self._stored_quantities = dict(params['stored_quantities'])
         
         self._time = 0
         
-        
-        
+
         self.initialize_domain()
-        self._bdry_conditions = self.set_boundary_conditions()
-        self.domain.set_boundary(self._bdry_conditions)
-                                       
-        # set some default values for quantities
-        self.domain.set_quantity('elevation', lambda x,y: -x/2. + 4)
-        self.domain.set_quantity('stage', expression='elevation + %f' % -0.4)
-        self.domain.set_quantity('friction', self._friction)
+        self.set_boundary_conditions()
+        self.set_other_domain_options()                           
         
         
         # store initial elevations for differencing as array of zeros
         self._land_surface__initial_elevation = np.zeros_like(self.land_surface__elevation)
+        
+        
+        
+        
+    def initialize_domain(self):
+        """Initialize anuga domain"""
 
-
+        if self._domain_shape[:6] in ['square', 'rectan']:
+        
+            # finds square and both rectangle and rectangular
+            self.domain = anuga.rectangular_cross_domain(
+                                self._shape[0],
+                                self._shape[1],
+                                len1 = self._size[0],
+                                len2 = self._size[1])
+                                
+            # set some default values for quantities
+            self.domain.set_quantity('elevation', lambda x,y: -x/2. + 4)
+                       
+                       
+                                
+                                
+        elif self._domain_shape in ['outline', 'irregular']:
+        
+            bounding_polygon = anuga.read_polygon(self._outline_filename)
+            filename_root = self._elevation_filename[:-4]
+            
+            
+            if self._elevation_filename[-4:] == '.asc':
+                anuga.asc2dem(filename_root + '.asc')
+                anuga.dem2pts(filename_root + '.dem')
+                
+            elif self._elevation_filename[-4:] != '.pts':
+                assert False, ("Cannot recognize file type of elevation file '%s'. "
+                               "Please use .asc or .pts file")
+                               
+            # generalize the mesh creation to be able to use the sed transport operator
+            evolved_quantities =  ['stage', 'xmomentum', 'ymomentum', 'concentration']
+            
+            anuga.pmesh.mesh_interface.create_mesh_from_regions(
+                                bounding_polygon = bounding_polygon,
+                                boundary_tags = self._bdry_tags,
+                                maximum_triangle_area = self._max_triangle_area)
+                                
+            self.domain = anuga.Domain(filename_root + '.msh',
+                                       evolved_quantities = evolved_quantities)
+            
+            
+            
+            self.domain.set_quantity('elevation', filename = filename_root + '.pts')
+            
+            
+        else:
+            assert False, ("domain shape must be 'square'/'rectangle'/'rectangular' "
+                            "or 'outline'/'irregular'")
+                            
+    
+        self.domain.set_quantity('stage', expression='elevation + %f' % -0.4)
+        
+        
+        
+        
     def set_boundary_conditions(self):
         """
         Set boundary conditions for ANUGA domain
@@ -121,31 +157,16 @@ class AnugaSolver(object):
                 assert False, ("Did not recognize boundary type '%s' "
                                "of boundary '%s'" % (bdry_type, key))
                 
-                
-                
-        return _bdry_conditions
-
-
-
-    def initialize_domain(self):
-        """Initialize anuga domain"""
-
-        if self._domain_shape[:6] in ['square', 'rectan']:
         
-            # finds square and both rectangle and rectangular
-            self.domain = anuga.rectangular_cross_domain(
-                                self._shape[0],
-                                self._shape[1],
-                                len1 = self._size[0],
-                                len2 = self._size[1])
-                                
-        elif self._domain_shape in ['outline', 'irregular']:
-            pass
-            
-        else:
-            assert False, ("domain shape must be 'square'/'rectangle'/'rectangular' "
-                            "or 'outline'/'irregular'")
-                
+        self._bdry_conditions = _bdry_conditions        
+        self.domain.set_boundary(self._bdry_conditions)
+        
+        
+
+    def set_other_domain_options(self):
+    
+        self.domain.set_name(self._output_filename)
+        self.domain.set_quantities_to_be_stored(self._stored_quantities)                
         
 
     @property
@@ -235,6 +256,6 @@ class AnugaSolver(object):
     def update(self):
         """Evolve."""
         
-        for t in self.domain.evolve(finaltime = self._time + self._time_step):
+        for t in self.domain.evolve(finaltime = self._time):
             print self.domain.timestepping_statistics()
 

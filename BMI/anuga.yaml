@@ -1,15 +1,16 @@
-domain_shape: square
+domain_shape: outline
 shape: [3, 3]
 size: [3., 3.]
-outline_filename: None
-elevation_filename: None
+outline_filename: 'data/outline.csv'
+elevation_filename: 'data/raster.asc'
 output_filename: 'sww_bmi'
-output_timestep: 1
 timestep: 5
-boundary_conditions: 
-    'left': Reflective
-    'top': Reflective
-    'right': [Dirichlet, 5]
-    'bottom': Reflective
-boundary_tags: 
-maximum_triangle_area: 10
+boundary_conditions:
+    'side': Reflective
+    'top': [Dirichlet, 1528, 0, -4.]
+    'bottom': [Dirichlet, 1520, 0, 0]
+boundary_tags:
+    'side': [0,1,2,4]
+    'top': [3]
+    'bottom': [5]
+maximum_triangle_area: 200

@@ -15,6 +15,6 @@ if __name__ == '__main__':
     sww.initialize('anuga.yaml')
     
 
-    for time in np.linspace(0., 10., 5):
+    for time in np.arange(0., 1000., 10):
     
         sww.update_until(time)
