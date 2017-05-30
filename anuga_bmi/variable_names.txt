@@ -1,0 +1,17 @@
+domain_shape:
+    - rectangular
+        shape
+        size
+    - outline
+        outline file
+        topo file
+
+
+output_name
+yieldstep
+elevation
+friction
+stage
+boundary tags
+boundary conditions
+max triangle area

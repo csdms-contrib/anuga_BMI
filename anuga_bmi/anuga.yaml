@@ -1,0 +1,15 @@
+domain_shape: square
+shape: [10, 5]
+size: [10., 5.]
+outline_filename: None
+elevation_filename: None
+output_filename: 'sww_bmi'
+output_timestep: 1
+timestep: 5
+boundary_conditions: 
+    'left': Reflective
+    'top': Reflective
+    'right': [Dirichlet, 5]
+    'bottom': Reflective
+boundary_tags: 
+maximum_triangle_area: 10

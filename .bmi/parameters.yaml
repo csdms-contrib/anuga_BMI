@@ -1,0 +1,45 @@
+number_of_rows:
+  description: Number of grid rows
+  value:
+    type: int
+    default: 10
+    range:
+      min: 0
+      max: 1000000
+    units: -
+number_of_columns:
+  description: Number of grid columns
+  value:
+    type: int
+    default: 10
+    range:
+      min: 0
+      max: 1000000
+    units: -
+grid_size_x:
+  description: Grid size in x-direction
+  value:
+    type: float
+    default: 1.0
+    range:
+      min: 0
+      max: 1000000
+    units: m
+grid_size_y:
+  description: Grid size in y-direction
+  value:
+    type: float
+    default: 1.0
+    range:
+      min: 0
+      max: 1000000
+    units: m
+stage:
+  description: Upstream stage
+  value:
+    type: float
+    default: 1.0
+    range:
+      min: 0.0
+      max: 100.0
+    units: m

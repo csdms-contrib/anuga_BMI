@@ -1,0 +1,6 @@
+bottom: Reflective
+left: Reflective
+right:
+- Dirichlet
+- 5
+top: Reflective
