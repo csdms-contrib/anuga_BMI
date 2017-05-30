@@ -80,36 +80,35 @@ class BmiAnuga(Bmi):
                     
             
         self._anuga = AnugaSolver(params)
-        
-#         self._anuga = AnugaSolver(
-#             domain_shape=params['domain_shape'],
-#             shape=params['shape'],
-#             size=params['size'],
-#             friction=params['friction'],
-#             outline_filename=params['outline_filename'],
-#             elevation_filename=params['elevation_filename'],
-#             output_filename=params['output_filename'],
-#             output_timestep=params['output_timestep'],
-#             timestep=params['timestep'],
-#             boundary_tags=params['boundary_tags'],
-#             boundary_conditions=params['boundary_conditions'],
-#             maximum_triangle_area=params['maximum_triangle_area'])
+
 
         self._values = {
             'water_surface__elevation': self._anuga.water_surface__elevation,
             'land_surface__elevation': self._anuga.land_surface__elevation,
+            'manning_n_parameter': self._anuga.manning_n_parameter,
+            'land_surface__initial_elevation': self._anuga.land_surface__initial_elevation,
         }
+        
+        
         self._var_units = {
             'water_surface__elevation': 'm',
             'land_surface__elevation': 'm',
+            'manning_n_parameter': '-',
+            'land_surface__initial_elevation': 'm',
         }
+        
         self._grids = {
             0: ['water_surface__elevation'],
             1: ['land_surface__elevation'],
+            2: ['manning_n_parameter'],
+            3: ['land_surface__initial_elevation'],
         }
+        
         self._grid_type = {
             0: 'unstructured_grid',
-            1: 'land_surface__elevation',
+            1: 'unstructured_grid',
+            2: 'unstructured_grid',
+            3: 'unstructured_grid',
         }
 
 

@@ -48,19 +48,14 @@ class AnugaSolver(object):
         self._bdry_conditions = self.set_boundary_conditions()
         self.domain.set_boundary(self._bdry_conditions)
                                        
-
+        # set some default values for quantities
         self.domain.set_quantity('elevation', lambda x,y: -x/2. + 4)
-        self.domain.set_quantity('stage', -0.4)
+        self.domain.set_quantity('stage', expression='elevation + %f' % -0.4)
         self.domain.set_quantity('friction', self._friction)
         
         
-        self._water_surface__elevation = self.domain.quantities['stage'].centroid_values
-        self._land_surface__elevation = self.domain.quantities['elevation'].centroid_values
-        
-        
-        # store initial elevations for differencing
-        self._land_surface__initial_elevation = self._land_surface__elevation.copy()
-
+        # store initial elevations for differencing as array of zeros
+        self._land_surface__initial_elevation = np.zeros_like(self.land_surface__elevation)
 
 
     def set_boundary_conditions(self):
@@ -189,41 +184,57 @@ class AnugaSolver(object):
         """Size of grid in meters."""
         return self._size
 
-    @property
-    def stage(self):
-        """Upstream stage."""
-        return self._stage
 
     ########
+    
+    @property
+    def manning_n_parameter(self):
+        """Manning's friction parameter"""
+        return self.domain.quantities['friction'].centroid_values
+        
+    @manning_n_parameter.setter
+    def manning_n_parameter(self, new_friction):
+        self.domain.set_quantity('friction', new_friction)
 
     @property
     def water_surface__elevation(self):
         """Temperature values on the grid."""
-        return self._water_surface__elevation
+        return self.domain.quantities['stage'].centroid_values
 
     @water_surface__elevation.setter
     def water_surface__elevation(self, new_stage):
-        self._water_surface__elevation[:] = new_stage
+        self.domain.set_quantity('stage', new_stage)
 
     @property
     def land_surface__elevation(self):
-        return self._land_surface__elevation
+        return self.domain.quantities['elevation'].centroid_values
         
     @land_surface__elevation.setter
     def land_surface__elevation(self, new_elev):
-        self._land_surface__elevation[:] = new_elev
+        self.domain.set_quantity('elevation', new_elev)
 
+        
 
     #########
+    
+    @property
+    def land_surface__initial_elevation(self):
+        """Initial surface elevation, for differencing"""
+        return self._land_surface__initial_elevation
+        
+    @land_surface__initial_elevation.setter
+    def land_surface__initial_elevation(self, new_init_elev):
+        """Able to set the initial land surface elevation to
+        set an initial elev for differencing. Use:
+            
+        land_surface__initial_elevation = land_surface__elevation
+        """
+        self._land_surface__initial_elevation[:] = new_init_elev
+    
 
     def update(self):
         """Evolve."""
         
-#         self.domain.set_evolve_starttime(self._time)
-        
         for t in self.domain.evolve(finaltime = self._time + self._time_step):
             print self.domain.timestepping_statistics()
-        
-        self.water_surface__elevation[:] = self.domain.quantities['stage'].centroid_values
-        # 
-        print self.water_surface__elevation.mean()
+

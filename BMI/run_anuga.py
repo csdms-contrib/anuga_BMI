@@ -13,6 +13,8 @@ if __name__ == '__main__':
 
     sww = BmiAnuga()
     sww.initialize('anuga.yaml')
+    
 
-    for time in np.linspace(0., 100., 5):
+    for time in np.linspace(0., 10., 5):
+    
         sww.update_until(time)
