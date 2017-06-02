@@ -3,7 +3,7 @@ import warnings
 
 import numpy as np
 
-import anuga
+from ..anuga import anuga
 
 
 class AnugaSolver(object):
@@ -305,7 +305,12 @@ class AnugaSolver(object):
 
     @land_surface_water_surface__elevation.setter
     def land_surface_water_surface__elevation(self, new_stage):
+    
         self.domain.set_quantity('stage', new_stage, location='centroids')
+        
+        new_depth = new_stage - self.land_surface__elevation
+        self.domain.set_quantity('height', new_depth, location='centroids')
+        
         
     @property
     def land_surface_water__depth(self):
@@ -313,7 +318,12 @@ class AnugaSolver(object):
         
     @land_surface_water__depth.setter
     def land_surface_water__depth(self, new_depth):
+    
         self.domain.set_quantity('height', new_depth, location='centroids')
+        
+        new_stage = self.land_surface__elevation + new_depth
+        self.domain.set_quantity('stage', new_stage, location='centroids')
+        
         
     @property
     def land_surface_water_flow__x_component_of_momentum(self):

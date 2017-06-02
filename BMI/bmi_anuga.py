@@ -13,9 +13,26 @@ from anuga_solver import AnugaSolver
 class BmiAnuga(Bmi):
 
 
-    _name = 'ANUGA'
-    _input_var_names = ('land_surface_water_surface__elevation',)
-    _output_var_names = ('land_surface_water_surface__elevation',)
+    _name = 'anugaSed'
+    _input_var_names = (
+            'manning_n_parameter',
+            'land_surface__elevation',
+            'land_surface_water_surface__elevation',
+            'land_surface_water__depth',
+            'land_surface_water_sediment_suspended__volume_concentration',
+            'land_vegetation__stem_spacing',
+            'land_vegetation__stem_diameter',)
+            
+    _output_var_names = (
+            'land_surface__elevation',
+            'land_surface_water_surface__elevation',
+            'land_surface_water__depth',
+            'land_surface_water_flow__x_component_of_momentum',
+            'land_surface_water_flow__y_component_of_momentum',
+            'land_surface_water_flow__shear_stress',
+            'land_surface_water_sediment_suspended__volume_concentration',
+            'land_vegetation__stem_spacing',
+            'land_vegetation__stem_diameter',)
 
     def __init__(self):
         """Create a BmiAnuga model that is ready for initialization."""
@@ -92,33 +109,53 @@ class BmiAnuga(Bmi):
 
 
         self._values = {
-            'land_surface_water_surface__elevation': self._anuga.land_surface_water_surface__elevation,
-            'land_surface__elevation': self._anuga.land_surface__elevation,
             'manning_n_parameter': self._anuga.manning_n_parameter,
-            'land_surface__initial_elevation': self._anuga.land_surface__initial_elevation,
-        }
+            'land_surface__elevation': self._anuga.land_surface__elevation,
+            'land_surface_water_surface__elevation': self._anuga.land_surface_water_surface__elevation,
+            'land_surface_water__depth': self._anuga.land_surface_water__depth,
+            'land_surface_water_flow__x_component_of_momentum': self._anuga.land_surface_water_flow__x_component_of_momentum,
+            'land_surface_water_flow__y_component_of_momentum': self._anuga.land_surface_water_flow__y_component_of_momentum,
+            'land_surface_water_flow__shear_stress': self._anuga.land_surface_water_flow__shear_stress,
+            'land_surface_water_sediment_suspended__volume_concentration': self._anuga.land_surface_water_sediment_suspended__volume_concentration,
+            'land_vegetation__stem_spacing': self._anuga.land_vegetation__stem_spacing,
+            'land_vegetation__stem_diameter': self._anuga.land_vegetation__stem_diameter,}
         
         
         self._var_units = {
-            'land_surface_water_surface__elevation': 'm',
-            'land_surface__elevation': 'm',
             'manning_n_parameter': '-',
-            'land_surface__initial_elevation': 'm',
-        }
+            'land_surface__elevation': 'm',
+            'land_surface_water_surface__elevation': 'm',
+            'land_surface_water__depth': 'm',
+            'land_surface_water_flow__x_component_of_momentum': 'm2 s-1',
+            'land_surface_water_flow__y_component_of_momentum': 'm2 s-1',
+            'land_surface_water_flow__shear_stress': 'Kg m−1 s−2',
+            'land_surface_water_sediment_suspended__volume_concentration': '-',
+            'land_vegetation__stem_spacing': 'm',
+            'land_vegetation__stem_diameter': 'm',}
         
         self._grids = {
-            0: ['land_surface_water_surface__elevation'],
+            0: ['manning_n_parameter'],
             1: ['land_surface__elevation'],
-            2: ['manning_n_parameter'],
-            3: ['land_surface__initial_elevation'],
-        }
+            2: ['land_surface_water_surface__elevation'],
+            3: ['land_surface_water__depth'],
+            4: ['land_surface_water_flow__x_component_of_momentum'],
+            5: ['land_surface_water_flow__y_component_of_momentum'],
+            6: ['land_surface_water_flow__shear_stress'],
+            7: ['land_surface_water_sediment_suspended__volume_concentration'],
+            8: ['land_vegetation__stem_spacing'],
+            9: ['land_vegetation__stem_diameter'],}
         
         self._grid_type = {
-            0: 'unstructured_grid',
-            1: 'unstructured_grid',
-            2: 'unstructured_grid',
-            3: 'unstructured_grid',
-        }
+            0: 'unstructured grid',
+            1: 'unstructured grid',
+            2: 'unstructured grid',
+            3: 'unstructured grid',
+            4: 'unstructured grid',
+            5: 'unstructured grid',
+            6: 'unstructured grid',
+            7: 'unstructured grid',
+            8: 'unstructured grid',
+            9: 'unstructured grid',}
 
 
 
