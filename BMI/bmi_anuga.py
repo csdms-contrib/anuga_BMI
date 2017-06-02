@@ -55,11 +55,11 @@ class BmiAnuga(Bmi):
         with open(filename, 'r') as file_obj:
             params = yaml.load(file_obj)
         
-        default_params = {'domain_shape':'square',
+        default_params = {'domain_type':'square',
                           'shape':(10.,5.),
                           'size':(10.,5.),
                           'friction':0.,
-                          'outline_filename':'',
+                          'boundary_filename':'',
                           'elevation_filename':'',
                           'output_filename':'anuga_output',
                           'output_timestep':10,

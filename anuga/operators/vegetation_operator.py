@@ -41,6 +41,7 @@ class Vegetation_operator(Operator, object):
         self.xmom = self.domain.quantities['xmomentum'].centroid_values
         self.ymom = self.domain.quantities['ymomentum'].centroid_values
         self.depth = self.domain.quantities['height'].centroid_values
+        self.elev = self.domain.quantities['elevation'].centroid_values
         
         self.num_cells = len(self.depth)
         

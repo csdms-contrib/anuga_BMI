@@ -10,10 +10,10 @@ class AnugaSolver(object):
 
     def __init__(self, params):
                 
-        self._domain_shape = str(params['domain_shape'])
+        self._domain_type = str(params['domain_type'])
         self._shape = tuple(params['shape'])
         self._size = tuple(params['size'])
-        self._outline_filename = str(params['outline_filename'])
+        self._boundary_filename = str(params['boundary_filename'])
         self._elevation_filename = str(params['elevation_filename'])
         self._output_filename = str(params['output_filename'])
         self._time_step = float(params['output_timestep'])
@@ -98,13 +98,13 @@ class AnugaSolver(object):
         """Initialize anuga domain"""
 
 
-        assert self._domain_shape[:6] in ['square', 'rectan', 'outlin', 'irregu'], (
+        assert self._domain_type[:5] in ['squar', 'recta', 'outli', 'irreg', 'bound'], (
             "Domain shape must be 'square'/'rectangle'/'rectangular' or "
-            "'outline'/'irregular'. Shape '%s' is not recognized." % self._domain_shape)
+            "'outline'/'irregular'. Shape '%s' is not recognized." % self._domain_type)
 
 
 
-        if self._domain_shape[:6] in ['square', 'rectan']:
+        if self._domain_type[:5] in ['squar', 'recta']:
         
             self.domain = anuga.rectangular_cross_domain(
                                 self._shape[0],
@@ -117,9 +117,9 @@ class AnugaSolver(object):
                        
                        
                                 
-        elif self._domain_shape[:6] in ['outlin', 'irregu']:
+        elif self._domain_type[:5] in ['outli', 'irreg', 'bound']:
         
-            bounding_polygon = anuga.read_polygon(self._outline_filename)
+            bounding_polygon = anuga.read_polygon(self._boundary_filename)
             
             filename_root = self._elevation_filename[:-4]
             

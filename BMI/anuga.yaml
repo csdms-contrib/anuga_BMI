@@ -1,7 +1,7 @@
-domain_shape: outline
+domain_type: outline
 shape: [3, 3]
 size: [3., 3.]
-outline_filename: 'data/outline.csv'
+boundary_filename: 'data/outline.csv'
 elevation_filename: 'data/raster.asc'
 output_filename: 'sww_bmi'
 output_timestep: 5
