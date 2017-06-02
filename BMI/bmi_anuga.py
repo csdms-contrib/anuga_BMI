@@ -128,7 +128,7 @@ class BmiAnuga(Bmi):
             'land_surface_water__depth': 'm',
             'land_surface_water_flow__x_component_of_momentum': 'm2 s-1',
             'land_surface_water_flow__y_component_of_momentum': 'm2 s-1',
-            'land_surface_water_flow__shear_stress': 'Kg m−1 s−2',
+            'land_surface_water_flow__shear_stress': 'kg m-1 s-2',
             'land_surface_water_sediment_suspended__volume_concentration': '-',
             'land_vegetation__stem_spacing': 'm',
             'land_vegetation__stem_diameter': 'm',}

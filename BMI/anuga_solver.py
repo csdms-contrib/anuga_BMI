@@ -3,7 +3,7 @@ import warnings
 
 import numpy as np
 
-from ..anuga import anuga
+import anuga
 
 
 class AnugaSolver(object):
