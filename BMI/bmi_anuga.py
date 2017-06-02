@@ -14,8 +14,8 @@ class BmiAnuga(Bmi):
 
 
     _name = 'ANUGA'
-    _input_var_names = ('water_surface__elevation',)
-    _output_var_names = ('water_surface__elevation',)
+    _input_var_names = ('land_surface_water_surface__elevation',)
+    _output_var_names = ('land_surface_water_surface__elevation',)
 
     def __init__(self):
         """Create a BmiAnuga model that is ready for initialization."""
@@ -45,7 +45,7 @@ class BmiAnuga(Bmi):
                           'outline_filename':'',
                           'elevation_filename':'',
                           'output_filename':'anuga_output',
-                          'timestep':10,
+                          'output_timestep':10,
                           'boundary_tags':{'left':[],
                                            'right':[],
                                            'top':[],
@@ -58,7 +58,18 @@ class BmiAnuga(Bmi):
                                                'xmomentum':2,
                                                'ymomentum':2,
                                                'elevation':1},
-                          'maximum_triangle_area':10}
+                          'maximum_triangle_area':10,
+                          'initial_flow_depth': 0,
+                          'interior_polygon_filename':'',
+                          'interior_polygon_triangle_area': 0.0,
+                          'toggle_sediment_transport':False,
+                          'inflow_sediment_concentration': 0.0,
+                          'initial_sediment_concentration': 0.0,
+                          'toggle_vegetation_drag': False,
+                          'vegetation_stem_diameter': 0.0,
+                          'vegetation_stem_spacing': 0.0,
+                          'Mannings_n_parameter': 0.0,
+                          }
         
         
         
@@ -81,7 +92,7 @@ class BmiAnuga(Bmi):
 
 
         self._values = {
-            'water_surface__elevation': self._anuga.water_surface__elevation,
+            'land_surface_water_surface__elevation': self._anuga.land_surface_water_surface__elevation,
             'land_surface__elevation': self._anuga.land_surface__elevation,
             'manning_n_parameter': self._anuga.manning_n_parameter,
             'land_surface__initial_elevation': self._anuga.land_surface__initial_elevation,
@@ -89,14 +100,14 @@ class BmiAnuga(Bmi):
         
         
         self._var_units = {
-            'water_surface__elevation': 'm',
+            'land_surface_water_surface__elevation': 'm',
             'land_surface__elevation': 'm',
             'manning_n_parameter': '-',
             'land_surface__initial_elevation': 'm',
         }
         
         self._grids = {
-            0: ['water_surface__elevation'],
+            0: ['land_surface_water_surface__elevation'],
             1: ['land_surface__elevation'],
             2: ['manning_n_parameter'],
             3: ['land_surface__initial_elevation'],

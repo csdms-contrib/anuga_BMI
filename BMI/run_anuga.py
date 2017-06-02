@@ -9,6 +9,7 @@ import numpy as np
 
 from bmi_anuga import BmiAnuga
 
+
 if __name__ == '__main__':
 
     sww = BmiAnuga()
