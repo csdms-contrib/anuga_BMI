@@ -1,6 +1,6 @@
 # Anuga_BMI
 
-Anuga_BMI is the BMI interface for (anugaSed)[https://github.com/mperignon/anuga_core].
+Anuga_BMI is the BMI interface for [anugaSed](https://github.com/mperignon/anuga_core).
 
 ## Installation
 
