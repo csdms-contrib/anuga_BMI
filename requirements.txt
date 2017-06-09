@@ -1,0 +1,11 @@
+basic-modeling-interface
+PyYAML
+anuga
+netCDF4
+matplotlib
+scipy
+numpy
+Cython
+
+-e https://github.com/mperignon/anuga_core/tarball/master#egg=anuga
+-e .
