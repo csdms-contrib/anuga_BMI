@@ -7,7 +7,7 @@ import numpy as np
 import yaml
 from basic_modeling_interface import Bmi
 
-from anuga_solver import AnugaSolver
+from anuga_bmi.anuga_solver import AnugaSolver
 
 
 class BmiAnuga(Bmi):
