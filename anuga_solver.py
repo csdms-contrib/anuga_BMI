@@ -146,7 +146,8 @@ class AnugaSolver(object):
                                 bounding_polygon = bounding_polygon,
                                 boundary_tags = self._bdry_tags,
                                 interior_regions = self._interior_regions,
-                                maximum_triangle_area = self._max_triangle_area)
+                                maximum_triangle_area = self._max_triangle_area,
+                                filename = filename_root + '.msh')
                                 
             self.domain = anuga.Domain(filename_root + '.msh',
                                        evolved_quantities = evolved_quantities)
