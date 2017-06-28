@@ -7,7 +7,7 @@ from __future__ import print_function
 import sys
 import numpy as np
 
-from anugaBMI import BmiAnuga
+from anuga_bmi import BmiAnuga
 
 
 if __name__ == '__main__':
