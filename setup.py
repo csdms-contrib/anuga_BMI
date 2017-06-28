@@ -19,5 +19,6 @@ setup_requires=['numpy', 'Cython'],
                         'anuga',
                         'netCDF4',
                         'matplotlib',
-                        'scipy']
+                        'scipy',
+                        'numpy']
 )
