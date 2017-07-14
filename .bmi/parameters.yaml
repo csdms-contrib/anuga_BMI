@@ -14,7 +14,7 @@ number_of_rows:
     range:
       min: 3
       max: 10000
-    units: -
+    units: '-'
 number_of_columns:
   description: Number of grid columns for rectangular domain
   value:
@@ -23,7 +23,7 @@ number_of_columns:
     range:
       min: 3
       max: 10000
-    units: -
+    units: '-'
 grid_size_x:
   description: Grid size in x-direction for rectangular domain
   value:
@@ -61,7 +61,7 @@ output_filename:
     value:
         type: string
         default: 'anuga_output'
-        units: -
+        units: '-'
 output_timestep:
   description: Timestep for saving output to SWW file
   value:
@@ -76,13 +76,13 @@ dict_of_boundary_tags:
   value:
     type: string
     default: ''
-    units: -
+    units: '-'
 dict_of_boundary_conditions:
   description: Dictionary of boundary tags and boundary conditions
   value:
     type: string
     default: {'left': 'Reflective','right': ['Dirichlet', 5, 0, 0],'top': 'Reflective','bottom': 'Reflective'}
-    units: -
+    units: '-'
 maximum_triangle_area:
   description: Maximum area of grid triangles for boundary-type domains
   value:
@@ -133,7 +133,7 @@ inflow_sediment_concentration:
     range:
       min: 0.0
       max: 0.3
-    units: -
+    units: '-'
 initial_sediment_concentration:
   description: Volumetric concentration of suspended sediment for all flow at start of simulation
   value:
@@ -142,7 +142,7 @@ initial_sediment_concentration:
     range:
       min: 0.0
       max: 0.3
-    units: -
+    units: '-'
 use_vegetation_operator:
     description: Option to use the vegetation drag operator
     value:
@@ -177,7 +177,7 @@ Mannings_n_parameter:
     range:
       min: 0.0
       max: 1.0
-    units: -
+    units: '-'
 
 
 
