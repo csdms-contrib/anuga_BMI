@@ -1,7 +1,7 @@
 name: AnugaSed
 language: python
 
-package: bmi_anuga
+package: anuga_bmi
 class: BmiAnuga
 
 build:
