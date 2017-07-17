@@ -81,7 +81,7 @@ dict_of_boundary_conditions:
   description: Dictionary of boundary tags and boundary conditions
   value:
     type: string
-    default: {'left': 'Reflective','right': ['Dirichlet', 5, 0, 0],'top': 'Reflective','bottom': 'Reflective'}
+    default: "{'left': 'Reflective','right': ['Dirichlet', 5, 0, 0],'top': 'Reflective','bottom': 'Reflective'}"
     units: '-'
 maximum_triangle_area:
   description: Maximum area of grid triangles for boundary-type domains
