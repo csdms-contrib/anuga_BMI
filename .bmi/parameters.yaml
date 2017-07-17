@@ -169,7 +169,7 @@ stem_spacing:
       min: 0.0
       max: 10.0
     units: m
-Mannings_n_parameter:
+friction_parameter:
   description: Manning n friction coefficient
   value:
     type: float
