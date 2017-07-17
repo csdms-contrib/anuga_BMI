@@ -2,10 +2,10 @@ domain_type:
     description: Type of model domain
     value:
         type: choice
-        default: 'Rectangular'
+        default: 'rectangular'
         choices:
-        - 'Rectangular'
-        - 'Boundary'
+        - 'rectangular'
+        - 'boundary'
 number_of_rows:
   description: Number of grid rows for rectangular domain
   value:
