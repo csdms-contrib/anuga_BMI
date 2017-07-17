@@ -164,6 +164,7 @@ class AnugaSolver(object):
         anuga.Quantity(self.domain, name='veg_diameter', register=True)
         anuga.Quantity(self.domain, name='veg_spacing', register=True)
         anuga.Quantity(self.domain, name='shear_stress', register=True)
+        anuga.Quantity(self.domain, name='concentration', register=True)
         
         
         
