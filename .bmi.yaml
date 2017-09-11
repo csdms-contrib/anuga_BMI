@@ -1,0 +1,6 @@
+bmi_paths:
+    - .bmi/anugaSed_rectangular
+    - .bmi/anugaSed_outline
+    
+build:
+    - python setup.py develop

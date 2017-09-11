@@ -1,11 +1,3 @@
-domain_type:
-    description: Type of model domain
-    value:
-        type: choice
-        default: 'rectangular'
-        choices:
-        - 'rectangular'
-        - 'boundary'
 number_of_rows:
   description: Number of grid rows for rectangular domain
   value:
@@ -42,20 +34,6 @@ grid_size_y:
       min: 0.01
       max: 1000000
     units: m
-boundary_filename:
-    description: CSV file of boundary node coordinates (UTM)
-    value:
-      type: file
-      default: outline.csv
-      files:
-        - outline.csv
-elevation_filename:
-    description: Raster of elevation data (.asc or .pts)
-    value:
-      type: file
-      default: raster.asc
-      files:
-        - raster.asc
 output_filename:
     description: Name of ANUGA output file (.sww)
     value:
@@ -71,27 +49,12 @@ output_timestep:
       min: 1
       max: 20000
     units: s
-dict_of_boundary_tags:
-  description: Dictionary of boundary tags and lists of boundary segment indices. Empty for rectangular domains.
-  value:
-    type: string
-    default: ''
-    units: '-'
 dict_of_boundary_conditions:
   description: Dictionary of boundary tags and boundary conditions
   value:
     type: string
     default: "{'left': 'Reflective','right': ['Dirichlet', 5, 0, 0],'top': 'Reflective','bottom': 'Reflective'}"
     units: '-'
-maximum_triangle_area:
-  description: Maximum area of grid triangles for boundary-type domains
-  value:
-    type: float
-    default: 10.0
-    range:
-      min: 1.0
-      max: 20000.0
-    units: m2
 initial_flow_depth:
   description: Initial water depth across the domain
   value:
@@ -101,22 +64,6 @@ initial_flow_depth:
       min: 0.0
       max: 50.0
     units: m
-interior_polygon_filename:
-    description: CSV file of boundary node coordinates (UTM) for an interior polygon (optional)
-    value:
-      type: file
-      default: inner_boundary.csv
-      files:
-        - inner_boundary.csv
-interior_polygon_triangle_area:
-  description: Maximum area of grid triangles for interior polygon (optional)
-  value:
-    type: float
-    default: 0.0
-    range:
-      min: 1.0
-      max: 20000.0
-    units: m2
 use_sed_transport_operator:
     description: Option to use the suspended sediment transport operator
     value:

@@ -1,0 +1,139 @@
+boundary_filename:
+    description: CSV file of boundary node coordinates (UTM)
+    value:
+      type: file
+      default: outline.csv
+      files:
+        - outline.csv
+elevation_filename:
+    description: Raster of elevation data (.asc or .pts)
+    value:
+      type: file
+      default: raster.asc
+      files:
+        - raster.asc
+output_filename:
+    description: Name of ANUGA output file (.sww)
+    value:
+        type: string
+        default: 'anuga_output'
+        units: '-'
+output_timestep:
+  description: Timestep for saving output to SWW file
+  value:
+    type: int
+    default: 10
+    range:
+      min: 1
+      max: 20000
+    units: s
+dict_of_boundary_tags:
+  description: Dictionary of boundary tags and lists of boundary segment indices.
+  value:
+    type: string
+    default: ''
+    units: '-'
+dict_of_boundary_conditions:
+  description: Dictionary of boundary tags and boundary conditions
+  value:
+    type: string
+    default: "{'left': 'Reflective','right': ['Dirichlet', 5, 0, 0],'top': 'Reflective','bottom': 'Reflective'}"
+    units: '-'
+maximum_triangle_area:
+  description: Maximum area of grid triangles for boundary-type domains
+  value:
+    type: float
+    default: 10.0
+    range:
+      min: 1.0
+      max: 20000.0
+    units: m2
+initial_flow_depth:
+  description: Initial water depth across the domain
+  value:
+    type: float
+    default: 0.0
+    range:
+      min: 0.0
+      max: 50.0
+    units: m
+interior_polygon_filename:
+    description: CSV file of boundary node coordinates (UTM) for an interior polygon (optional)
+    value:
+      type: file
+      default: inner_boundary.csv
+      files:
+        - inner_boundary.csv
+interior_polygon_triangle_area:
+  description: Maximum area of grid triangles for interior polygon (optional)
+  value:
+    type: float
+    default: 0.0
+    range:
+      min: 1.0
+      max: 20000.0
+    units: m2
+use_sed_transport_operator:
+    description: Option to use the suspended sediment transport operator
+    value:
+        type: choice
+        default: 'False'
+        choices:
+        - 'True'
+        - 'False'
+inflow_sediment_concentration:
+  description: Volumetric concentration of suspended sediment at inflow boundary
+  value:
+    type: float
+    default: 0.0
+    range:
+      min: 0.0
+      max: 0.3
+    units: '-'
+initial_sediment_concentration:
+  description: Volumetric concentration of suspended sediment for all flow at start of simulation
+  value:
+    type: float
+    default: 0.0
+    range:
+      min: 0.0
+      max: 0.3
+    units: '-'
+use_vegetation_operator:
+    description: Option to use the vegetation drag operator
+    value:
+        type: choice
+        default: 'False'
+        choices:
+        - 'True'
+        - 'False'
+stem_diameter:
+  description: Diameter of vegetation stems throughout the model domain
+  value:
+    type: float
+    default: 0.0
+    range:
+      min: 0.0
+      max: 1.0
+    units: m
+stem_spacing:
+  description: Spacing of vegetation stems throughout the model domain
+  value:
+    type: float
+    default: 0.0
+    range:
+      min: 0.0
+      max: 10.0
+    units: m
+friction_parameter:
+  description: Manning n friction coefficient
+  value:
+    type: float
+    default: 0.0
+    range:
+      min: 0.0
+      max: 1.0
+    units: '-'
+
+
+
