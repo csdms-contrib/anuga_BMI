@@ -3,6 +3,3 @@ language: python
 
 package: anuga_bmi
 class: BmiAnuga
-
-build:
-  - python setup.py install
