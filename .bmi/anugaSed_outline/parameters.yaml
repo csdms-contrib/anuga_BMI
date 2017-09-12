@@ -31,13 +31,13 @@ dict_of_boundary_tags:
   description: Dictionary of boundary tags and lists of boundary segment indices.
   value:
     type: string
-    default: ''
+    default: "{'bottom':[0],'side1':[1],'side2':[2],'top':[3],'side3':[4],'side4':[5]}"
     units: '-'
 dict_of_boundary_conditions:
   description: Dictionary of boundary tags and boundary conditions
   value:
     type: string
-    default: "{'left': 'Reflective','right': ['Dirichlet', 5, 0, 0],'top': 'Reflective','bottom': 'Reflective'}"
+    default: "{'bottom':['Dirichlet', 1510, 0, 0],'side1':'Reflective','side2':'Reflective','top':['Dirichlet',1528, 0., 0.],'side3':'Reflective','side4':'Reflective','exterior':'Reflective'}"
     units: '-'
 maximum_triangle_area:
   description: Maximum area of grid triangles for boundary-type domains
