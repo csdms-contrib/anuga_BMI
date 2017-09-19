@@ -1,10 +1,11 @@
 boundary_filename:
-    description: CSV file of boundary node coordinates (UTM)
+    description: CSV file of exterior boundary node coordinates
     value:
       type: file
       default: outline.csv
       files:
         - outline.csv
+      units: UTM
 elevation_filename:
     description: Raster of elevation data (.asc or .pts)
     value:
@@ -12,6 +13,14 @@ elevation_filename:
       default: raster.asc
       files:
         - raster.asc
+projection_filename:
+  description: Projection information file (if elevation raster is .asc)
+  value:
+    type: file
+    default: 'raster.prj'
+    files:
+      - 'Off'
+      - 'raster.prj'
 output_filename:
     description: Name of ANUGA output file (.sww)
     value:
@@ -40,7 +49,7 @@ dict_of_boundary_conditions:
     default: "{'bottom':['Dirichlet', 1510, 0, 0],'side1':'Reflective','side2':'Reflective','top':['Dirichlet',1528, 0., 0.],'side3':'Reflective','side4':'Reflective'}"
     units: '-'
 maximum_triangle_area:
-  description: Maximum area of grid triangles for boundary-type domains
+  description: Maximum area of grid triangles
   value:
     type: float
     default: 10.0
@@ -58,17 +67,19 @@ initial_flow_depth:
       max: 50.0
     units: m
 interior_polygon_filename:
-    description: CSV file of boundary node coordinates (UTM) for an interior polygon (optional)
+    description: CSV file of interior boundary node coordinates (optional)
     value:
       type: file
-      default: inner_boundary.csv
+      default: 'inner_boundary.csv'
       files:
-        - inner_boundary.csv
+        - 'Off'
+        - 'inner_boundary.csv'
+      units: UTM
 interior_polygon_triangle_area:
-  description: Maximum area of grid triangles for interior polygon (optional)
+  description: Maximum area of grid triangles
   value:
     type: float
-    default: 0.0
+    default: 10.0
     range:
       min: 1.0
       max: 20000.0

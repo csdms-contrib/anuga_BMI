@@ -1,5 +1,5 @@
 number_of_rows:
-  description: Number of grid rows for rectangular domain
+  description: Number of grid rows
   value:
     type: int
     default: 10
@@ -8,7 +8,7 @@ number_of_rows:
       max: 10000
     units: '-'
 number_of_columns:
-  description: Number of grid columns for rectangular domain
+  description: Number of grid columns
   value:
     type: int
     default: 10
@@ -17,7 +17,7 @@ number_of_columns:
       max: 10000
     units: '-'
 grid_size_x:
-  description: Grid size in x-direction for rectangular domain
+  description: Grid size in x-direction
   value:
     type: float
     default: 1.0
@@ -26,7 +26,7 @@ grid_size_x:
       max: 1000000
     units: m
 grid_size_y:
-  description: Grid size in y-direction for rectangular domain
+  description: Grid size in y-direction
   value:
     type: float
     default: 1.0
