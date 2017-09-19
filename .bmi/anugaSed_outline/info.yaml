@@ -2,3 +2,4 @@ url: http://csdms.colorado.edu/wiki/Model:Anuga
 author: Mariela Perignon
 email: perignon@colorado.edu
 version: 0.1
+summary: This CDSMS model component allows for limited use of ANUGA, a hydrodynamic model for simulating depth-averaged flows over 2D surfaces, and the sediment transport and vegetation drag modules of anugaSed. Use this component for model runs over topographies derived from rasters.
