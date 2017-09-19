@@ -133,10 +133,16 @@ class AnugaSolver(object):
             
             
             if ((self._interior_regions is None) and
-                (self._interior_poly_triangle_area > 0.0)):
+                (self._interior_poly_triangle_area > 0.0) and
+                (self._interior_poly_filename is not None):
                 
-                interior_poly = anuga.read_polygon(self._interior_poly_filename)
-                self._interior_regions = [[interior_poly, self._interior_poly_triangle_area]]
+                try:
+                    interior_poly = anuga.read_polygon(
+                                    self._interior_poly_filename)
+                    self._interior_regions = [[interior_poly,
+                                             self._interior_poly_triangle_area]]
+                except:
+                    pass
             
                                
             # generalize the mesh creation to be able to use the sed transport operator
