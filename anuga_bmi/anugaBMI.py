@@ -63,6 +63,7 @@ class BmiAnuga(Bmi):
                           'friction':0.,
                           'boundary_filename':'',
                           'elevation_filename':'',
+                          'elevation_profile':'shallow linear ramp',
                           'output_filename':'anuga_output',
                           'output_timestep':10,
                           'boundary_tags':{'left':[],

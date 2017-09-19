@@ -34,6 +34,8 @@ class AnugaSolver(object):
         self._veg_stem_diameter = params['vegetation_stem_diameter']
         self._veg_stem_spacing = params['vegetation_stem_spacing']
         self._mannings_n = float(params['Mannings_n_parameter'])
+        
+        self._elevation_profile = str(params['elevation_profile'])
 
         
         self._time = 0
@@ -100,7 +102,8 @@ class AnugaSolver(object):
 
         assert self._domain_type[:5] in ['squar', 'recta', 'outli', 'irreg', 'bound'], (
             "Domain shape must be 'square'/'rectangle'/'rectangular' or "
-            "'outline'/'irregular'. Shape '%s' is not recognized." % self._domain_type)
+            "'outline'/'irregular'. Shape '%s' is not recognized." %
+            self._domain_type)
 
 
 
@@ -113,9 +116,10 @@ class AnugaSolver(object):
                                 len2 = self._size[1])
                                 
             # set some default values for quantities
-            self.domain.set_quantity('elevation', lambda x,y: -x/2. + 4)
-                       
-                       
+            self.set_elevation_rectangular()
+            
+            
+            
                                 
         elif self._domain_type[:5] in ['outli', 'irreg', 'bound']:
         
@@ -172,6 +176,178 @@ class AnugaSolver(object):
         anuga.Quantity(self.domain, name='shear_stress', register=True)
         anuga.Quantity(self.domain, name='concentration', register=True)
         
+
+
+    def set_elevation_rectangular(self):
+    
+            if self._elevation_profile == 'shallow linear ramp':
+            
+                self.domain.set_quantity('elevation', lambda x,y: -x/5.)
+            
+            if self._elevation_profile == 'steep linear ramp':
+            
+                self.domain.set_quantity('elevation', lambda x,y: -x/10.)
+
+            if self._elevation_profile == 'tall step down':
+            
+                z = -x/10
+                N = len(x)
+                minx = np.floor(np.max(x)/2)
+                maxx = np.ceil(np.max(x)/2 + 1)
+                stepx = np.min(x[(x >= minx) & (x <= maxx)])
+                stepz = 0.6 * (np.max(z) - np.min(z))
+
+                for i in range(N):
+                    if x[i] > stepx:
+                        z[i] -= stepz
+                        
+                self.domain.set_quantity('elevation', z)            
+            
+            if self._elevation_profile == 'short step down':
+            
+                z = -x/10
+                N = len(x)
+                minx = np.floor(np.max(x)/2)
+                maxx = np.ceil(np.max(x)/2 + 1)
+                stepx = np.min(x[(x >= minx) & (x <= maxx)])
+                stepz = 0.2 * (np.max(z) - np.min(z))
+
+                for i in range(N):
+                    if x[i] > stepx:
+                        z[i] -= stepz
+                        
+                self.domain.set_quantity('elevation', z)
+            
+            
+            if self._elevation_profile == 'step up':
+            
+                z = -x/10
+                N = len(x)
+                minx = np.floor(np.max(x)/2)
+                maxx = np.ceil(np.max(x)/2 + 1)
+                stepx = np.min(x[(x >= minx) & (x <= maxx)])
+                stepz = 0.3 * (np.max(z) - np.min(z))
+
+                for i in range(N):
+                    if x[i] > stepx:
+                        z[i] += stepz
+                        
+                self.domain.set_quantity('elevation', z)
+            
+            
+            if self._elevation_profile == 'dam':
+            
+                z = -x/10.
+                N = len(x)
+                minx = np.floor(np.max(x)/2)
+                maxx = np.ceil(np.max(x)/2)
+                maxz = 0.9 * np.max(z)
+    
+                if len(x[(x >= minx) & (x <= maxx)]) < 5:
+                    maxx = np.ceil(np.max(x)/2 + 1)
+    
+                for i in range(N):
+                    if minx <= x[i] <= maxx:
+                        z[i] = maxz
+                        
+                self.domain.set_quantity('elevation', z)
+                       
+                       
+            if self._elevation_profile == 'thin cylinder':
+                                              
+                z = -x/10
+                N = len(x)
+
+                minx = np.floor(np.max(x)/2)
+                maxx = np.ceil(np.max(x)/2 + 1)
+                stepx = np.min(x[(x >= minx) & (x <= maxx)])
+
+                miny = np.floor(np.max(y)/2)
+                maxy = np.ceil(np.max(y)/2 + 1)
+                stepy = np.min(y[(y >= miny) & (y <= maxy)])
+
+                radius = 0.1 * (np.max(y) - np.min(y))
+
+                for i in range(N):
+                    if (x[i]-stepx)**2 + (y[i]-stepy)**2 < radius**2:
+                        z[i] = np.max(z)
+                        
+                self.domain.set_quantity('elevation', z)
+            
+            
+            if self._elevation_profile == 'thick cylinder':
+                                              
+                z = -x/10
+                N = len(x)
+
+                minx = np.floor(np.max(x)/2)
+                maxx = np.ceil(np.max(x)/2 + 1)
+                stepx = np.min(x[(x >= minx) & (x <= maxx)])
+
+                miny = np.floor(np.max(y)/2)
+                maxy = np.ceil(np.max(y)/2 + 1)
+                stepy = np.min(y[(y >= miny) & (y <= maxy)])
+
+                radius = 0.4 * (np.max(y) - np.min(y))
+
+                for i in range(N):
+                    if (x[i]-stepx)**2 + (y[i]-stepy)**2 < radius**2:
+                        z[i] = np.max(z)
+                        
+                self.domain.set_quantity('elevation', z)
+                
+                
+                
+            if self._elevation_profile == 'wing dams':
+            
+                z = -x/10
+                N = len(x)
+                minx = np.floor(np.max(x)/2)
+                stepx1 = np.min(x[(x >= minx)])
+                stepx2 = np.min(x[(x > stepx1)])
+                dist = 0.2 * (np.max(y) - np.min(y))
+    
+                for i in range(N):
+                    if stepx1 <= x[i] <= stepx2:
+                        if (y[i] < dist) or (y[i] > np.max(y) - dist):
+                            z[i] += 1
+                            
+                self.domain.set_quantity('elevation', z)
+                
+                
+            if self._elevation_profile == 'alternating dykes':
+            
+                z = -x/10
+                N = len(x)
+
+                minx = np.floor(np.max(x)/4)
+                stepx1 = np.min(x[(x >= minx)])
+                stepx2 = np.min(x[(x > stepx1)])
+
+                minx = np.floor(np.max(x)/2)
+                stepx3 = np.min(x[(x >= minx)])
+                stepx4 = np.min(x[(x > stepx3)])
+
+                minx = np.floor(3*np.max(x)/4)
+                stepx5 = np.min(x[(x >= minx)])
+                stepx6 = np.min(x[(x > stepx5)])
+
+                dist = 0.3 * (np.max(y) - np.min(y))
+
+                for i in range(N):
+                    if stepx1 <= x[i] <= stepx2:
+                        if (y[i] < dist):
+                            z[i] += 1
+            
+                    if stepx3 <= x[i] <= stepx4:
+                        if (y[i] > np.max(y) - dist):
+                            z[i] += 1
+            
+                    if stepx5 <= x[i] <= stepx6:
+                        if (y[i] < dist):
+                            z[i] += 1
+                            
+                self.domain.set_quantity('elevation', z)
         
         
         

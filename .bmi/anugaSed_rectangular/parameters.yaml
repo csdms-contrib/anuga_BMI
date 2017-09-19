@@ -34,6 +34,22 @@ grid_size_y:
       min: 0.01
       max: 1000000
     units: m
+elevation_profile:
+    description: Elevation profile of rectangular domain
+    value:
+        type: choice
+        default: 'shallow linear ramp'
+        choices:
+        - 'shallow linear ramp'
+        - 'steep linear ramp'
+        - 'tall step down'
+        - 'short step down'
+        - 'step up'
+        - 'dam'
+        - 'thin cylinder'
+        - 'thick cylinder'
+        - 'wing dams'
+        - 'alternating dykes'
 output_filename:
     description: Name of ANUGA output file (.sww)
     value:
@@ -53,7 +69,7 @@ dict_of_boundary_conditions:
   description: Dictionary of boundary tags and boundary conditions
   value:
     type: string
-    default: "{'left': 'Reflective','right': ['Dirichlet', 5, 0, 0],'top': 'Reflective','bottom': 'Reflective'}"
+    default: "{'left': ['Dirichlet', 0.4, 0, 0],'right': 'Reflective','top': 'Reflective','bottom': 'Reflective'}"
     units: '-'
 initial_flow_depth:
   description: Initial water depth across the domain
