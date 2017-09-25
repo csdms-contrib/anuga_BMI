@@ -138,7 +138,7 @@ class AnugaSolver(object):
             
             if ((self._interior_regions is None) and
                 (self._interior_poly_triangle_area > 0.0) and
-                (self._interior_poly_filename is not None):
+                (self._interior_poly_filename is not None)):
                 
                 try:
                     interior_poly = anuga.read_polygon(
