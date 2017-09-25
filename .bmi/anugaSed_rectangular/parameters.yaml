@@ -49,7 +49,7 @@ elevation_profile:
         - 'thin cylinder'
         - 'thick cylinder'
         - 'wing dams'
-        - 'alternating dykes'
+        - 'alternating dikes'
 output_filename:
     description: Name of ANUGA output file (.sww)
     value:
